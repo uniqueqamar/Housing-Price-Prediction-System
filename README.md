@@ -37,16 +37,21 @@ This project uses Linear Regression, a supervised learning algorithm used for pr
 
 
 Project Workflow
+
+
 1. Data Loading
 The housing dataset is loaded using Pandas.
+
 
 2. Feature Selection
 Input feature: area
 
 Target variable: price
 
+
 3. Model Training
 The Linear Regression model is trained using Scikit-learn.
+
 
 4. Prediction
 The trained model predicts house prices for:
@@ -55,12 +60,14 @@ Existing data
 
 New input values (example: 1000 sq ft)
 
+
 5. Model Evaluation
 Model performance is evaluated using:
 
 Mean Squared Error (MSE)
 
 Lower MSE indicates better prediction performance.
+
 
 6. Visualization
 A scatter plot is created showing:
@@ -92,25 +99,26 @@ Project Structure
 House-Price-Prediction
 │
 ├── Housing copy.csv
-├── house_price_prediction.py
+├── housing.py
 ├── housing_plot.png
 └── README.md
 How to Run the Project
 1. Clone the repository
-git clone https://github.com/yourusername/Housing-Price-Prediction-System.git
+git clone https://github.com/uniqueqamar/Housing-Price-Prediction-System.git
+
 2. Install required libraries
 pip install numpy pandas scikit-learn matplotlib
 3. Run the script
 python house_price_prediction.py
 The program will:
 
-Train the model
+-Train the model
 
-Predict housing price
+-Predict housing price
 
-Display evaluation metrics
+-Display evaluation metrics
 
-Save the visualization plot
+-Save the visualization plot
 
 Future Improvements
 Possible improvements to this project include:
