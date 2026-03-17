@@ -103,5 +103,8 @@ Predicted price for new input (e.g., 1000 sq ft)
 Model slope and intercept
 Error metric (MSE)
 
+## Housing Plot
+![housing](housing_plot.png)
+
 
 
