@@ -1,140 +1,107 @@
-House Price Prediction using Linear Regression
-This project implements a Machine Learning regression model to predict house prices based on property area using Linear Regression. The model is trained on housing data and visualizes the relationship between house area and price.
+# 🏡 Housing Price Prediction System
+
+A machine learning project that predicts house prices based on property area using **Linear Regression**.  
+This project demonstrates the complete ML workflow including data loading, model training, evaluation, and visualization.
+
+---
+
+## 📌 Project Overview
+
+The goal of this project is to build a regression model that can predict housing prices based on input features such as **area (square feet)**.
+
+This is a **beginner-friendly machine learning project** that focuses on understanding:
+- Regression techniques
+- Model evaluation
+- Data visualization
+
+---
+
+## ❓ Problem Statement
+
+Accurately predicting house prices is important for:
+- Buyers and sellers
+- Real estate businesses
+- Market analysis
+
+This project builds a simple model that learns the relationship between **house area and price**.
+
+---
+
+## 📊 Dataset
+
+- Source: CSV file (local dataset)
+- Features used:
+  - `area` → Area of the house (sq ft)
+- Target variable:
+  - `price` → House price
+
+---
+
+## ⚙️ Technologies Used
+
+- Python
+- NumPy
+- Pandas
+- Matplotlib
+- Scikit-learn
+
+---
+
+## 🤖 Machine Learning Model
+
+### Linear Regression
+
+A **Linear Regression model** is used to predict house prices.
+
+It tries to fit a straight line:
+price = (slope × area) + intercept
 
 
-The goal of this project is to demonstrate the end-to-end machine learning workflow, including data loading, model training, prediction, evaluation, and visualization.
 
-Project Overview
-Housing prices often depend on various factors such as location, size, and amenities. In this project, we focus on area (square feet) as the primary feature and train a Linear Regression model to estimate house prices.
+---
 
-The model learns the relationship between:
+## 🔄 Project Workflow
 
-Independent variable: Area (square feet)
+### 1. Data Loading
+```python
+df = pd.read_csv("Housing copy.csv")
+```
+### 2. Feature Selection
+```python
+x = df[["area"]]
+y = df["price"]
+```
 
-Dependent variable: Price (dollars)
+### 3. Model Training
+```python
+model = LinearRegression()
+model.fit(x, y)
+```
 
-After training, the model can predict house prices for new areas.
+### 4. Prediction
+```python
+y_pred = model.predict(x)
+```
 
-Example prediction in the code:
+###5. Evaluation
+```python
+mean_squared_error(y, y_pred)
+```
 
-Area: 1000 sq ft
+### 6. Visualisation
+```python
+plt.scatter(x, y)
+plt.plot(x, y_pred)
+```
 
-Model outputs predicted price.
+📈 Results
 
-Technologies Used
-Python
+Model successfully predicts house prices based on area
 
-NumPy – numerical computations
-
-Pandas – data manipulation
-
-Scikit-learn – machine learning model
-
-Matplotlib – data visualization
-
-Machine Learning Model
-This project uses Linear Regression, a supervised learning algorithm used for predicting continuous values.
-
-
-Project Workflow
-
-
-1. Data Loading
-The housing dataset is loaded using Pandas.
-
-
-2. Feature Selection
-Input feature: area
-
-Target variable: price
-
-
-3. Model Training
-The Linear Regression model is trained using Scikit-learn.
-
-
-4. Prediction
-The trained model predicts house prices for:
-
-Existing data
-
-New input values (example: 1000 sq ft)
-
-
-5. Model Evaluation
-Model performance is evaluated using:
-
-Mean Squared Error (MSE)
-
-Lower MSE indicates better prediction performance.
-
-
-6. Visualization
-A scatter plot is created showing:
-
-Original housing data
-
-Linear regression prediction line
-
-The plot is saved as:
-
-housing_plot.png
-Example Output
-Example output from the program:
-
-Predicted Price for 1000 sq feet is : $XXXX
-Mean squared error: XXXX
-Slope: XXXX
-Model intercept: XXXX
-Visualization
-The visualization shows:
-
-Blue dots → original housing data
-
-Green line → regression prediction line
-
-This helps visualize the relationship between area and house price.
-
-Project Structure
-House-Price-Prediction
-│
-├── Housing copy.csv
-├── housing.py
-├── housing_plot.png
-└── README.md
-How to Run the Project
-1. Clone the repository
-git clone https://github.com/uniqueqamar/Housing-Price-Prediction-System.git
-
-2. Install required libraries
-pip install numpy pandas scikit-learn matplotlib
-3. Run the script
-python house_price_prediction.py
-The program will:
-
--Train the model
-
--Predict housing price
-
--Display evaluation metrics
-
--Save the visualization plot
-
-Future Improvements
-Possible improvements to this project include:
-
-Adding multiple features (bedrooms, location, age of house)
-
-Using multiple linear regression
-
-Applying advanced models such as Random Forest or Gradient Boosting
-
-Deploying the model as a web application
-
-Author
-Qamareen Fatima
-B.Tech – Electronics and Communication Engineering
-Birla Institute of Technology, Mesra
+Displays:
+Predicted price for new input (e.g., 1000 sq ft)
+Model slope and intercept
+Error metric (MSE)
 
 
 
