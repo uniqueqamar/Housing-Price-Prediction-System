@@ -5,11 +5,12 @@ based on area, bedrooms, bathrooms, furnishing, and more.
 Built with Linear Regression and deployed using Streamlit.
 
 ![App Screenshot](house_app.jpg)
+![App](house_app_2.jpg)
 
 ---
 
 ## Live Demo
-[Add your Streamlit Cloud link here once deployed]
+
 
 ---
 
@@ -68,7 +69,6 @@ streamlit run housing.py
 ## Screenshots
 
 ![Plot](housing_Rs.png)
-![App](house_app_2.jpg)
 
 ---
 
