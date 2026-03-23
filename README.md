@@ -1,110 +1,81 @@
-# 🏡 Housing Price Prediction System
+# House Price Prediction System
 
-A machine learning project that predicts house prices based on property area using **Linear Regression**.  
-This project demonstrates the complete ML workflow including data loading, model training, evaluation, and visualization.
+A machine learning web app that predicts house prices in India 
+based on area, bedrooms, bathrooms, furnishing, and more.
+Built with Linear Regression and deployed using Streamlit.
 
----
-
-## 📌 Project Overview
-
-The goal of this project is to build a regression model that can predict housing prices based on input features such as **area (square feet)**.
-
-This is a **beginner-friendly machine learning project** that focuses on understanding:
-- Regression techniques
-- Model evaluation
-- Data visualization
+![App Screenshot](house_app.jpg)
 
 ---
 
-## ❓ Problem Statement
-
-Accurately predicting house prices is important for:
-- Buyers and sellers
-- Real estate businesses
-- Market analysis
-
-This project builds a simple model that learns the relationship between **house area and price**.
+## Live Demo
+[Add your Streamlit Cloud link here once deployed]
 
 ---
 
-## 📊 Dataset
+## What it does
 
-- Source: CSV file (local dataset)
-- Features used:
-  - `area` → Area of the house (sq ft)
-- Target variable:
-  - `price` → House price
+- Takes house details as input (area, bedrooms, bathrooms, 
+  floors, parking, AC, furnishing, preferred area)
+- Predicts the price instantly in Indian Rupees
+- Shows a regression plot of area vs price
+- Displays model accuracy metrics (MSE, slope, intercept)
 
 ---
 
-## ⚙️ Technologies Used
+## Dataset
+
+- Source: Kaggle — Housing Price Dataset
+- 545 real house records
+- 13 features including area, bedrooms, bathrooms, 
+  stories, parking, airconditioning, furnishingstatus
+- Price range: ₹17.5 Lakhs to ₹1.33 Crore
+- Average price: ₹47.7 Lakhs
+
+---
+
+## Model
+
+| Detail | Value |
+|---|---|
+| Algorithm | Linear Regression |
+| Library | scikit-learn |
+| Features used | 8 (area, bedrooms, bathrooms, stories, parking, AC, prefarea, furnishing) |
+| Encoding | Label Encoding + Binary Mapping |
+
+---
+
+## Tech Stack
 
 - Python
-- NumPy
-- Pandas
-- Matplotlib
+- Pandas, NumPy
 - Scikit-learn
+- Matplotlib
+- Streamlit
 
 ---
 
-## 🤖 Machine Learning Model
-
-### Linear Regression
-
-A **Linear Regression model** is used to predict house prices.
-
-It tries to fit a straight line:
-price = (slope × area) + intercept
-
-
+## How to run locally
+```bash
+git clone https://github.com/uniqueqamar/Housing-Price-Prediction-System
+cd Housing-Price-Prediction-System
+pip install -r requirements.txt
+streamlit run housing.py
+```
 
 ---
 
-## 🔄 Project Workflow
+## Screenshots
 
-### 1. Data Loading
-```python
-df = pd.read_csv("Housing copy.csv")
-```
-### 2. Feature Selection
-```python
-x = df[["area"]]
-y = df["price"]
-```
+![Plot](housing_Rs.png)
+![App](house_app_2.jpg)
 
-### 3. Model Training
-```python
-model = LinearRegression()
-model.fit(x, y)
-```
+---
 
-### 4. Prediction
-```python
-y_pred = model.predict(x)
-```
+## What I learned
 
-###5. Evaluation
-```python
-mean_squared_error(y, y_pred)
-```
-
-### 6. Visualisation
-```python
-plt.scatter(x, y)
-plt.plot(x, y_pred)
-```
-
-📈 Results
-
-Model successfully predicts house prices based on area
-
-Displays:
-Predicted price for new input (e.g., 1000 sq ft)
-Model slope and intercept
-Error metric (MSE)
-
-## Housing Plot
-![housing](housing_Rs.png)
-
-
-
+- End-to-end ML workflow: data loading, preprocessing, 
+  training, evaluation, and deployment
+- Encoding categorical variables for ML models
+- Building interactive web apps with Streamlit
+- Feature engineering with multiple input variables
