@@ -104,7 +104,7 @@ Model slope and intercept
 Error metric (MSE)
 
 ## Housing Plot
-![housing](housing_plot.png)
+![housing](housing_Rs.png)
 
 
 
