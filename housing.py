@@ -6,7 +6,7 @@ from sklearn.metrics import mean_squared_error, r2_score
 import matplotlib.pyplot as plt
 import streamlit as st
 
-df = pd.read_csv("Housing copy.csv")
+df = pd.read_csv("HousingData.csv")
 
 # ENCODING: convert yes/no and text columns to numbers
 # the model only understands numbers, not words like "yes" or "furnished"
