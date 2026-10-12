@@ -1,83 +1,56 @@
-import numpy as np
+"""Interactive demonstration of the model evaluated by evaluate.py."""
 import pandas as pd
-from sklearn.linear_model import LinearRegression
-from sklearn.preprocessing import LabelEncoder
-from sklearn.metrics import mean_squared_error, r2_score
 import matplotlib.pyplot as plt
 import streamlit as st
+from modeling import FEATURES, load_data, train_and_evaluate
 
-df = pd.read_csv("HousingData.csv")
+st.set_page_config(page_title='House Price Predictor', layout='centered')
 
-# ENCODING: convert yes/no and text columns to numbers
-# the model only understands numbers, not words like "yes" or "furnished"
-le = LabelEncoder()
-df["furnishingstatus"] = le.fit_transform(df["furnishingstatus"])  
-# furnished=0, semi-furnished=1, unfurnished=2
+@st.cache_resource
+def training():
+    df = load_data()
+    return df, train_and_evaluate(df)
 
-for col in ["mainroad", "guestroom", "basement", 
-            "hotwaterheating", "airconditioning", "prefarea"]:
-    df[col] = df[col].map({"yes": 1, "no": 0})
-# converts yes -> 1, no -> 0 for all binary columns
-
-# FEATURES: now using all useful columns, not just area
-x = df[["area", "bedrooms", "bathrooms", "stories", 
-        "parking", "airconditioning", "prefarea", 
-        "furnishingstatus"]]
-y = df["price"]
-
-model = LinearRegression()
-model.fit(x, y)
-y_pred = model.predict(x)
-
-mse = mean_squared_error(y, y_pred)
-r2 = r2_score(y, y_pred)  # r2 tells how accurate model is, 1.0 = perfect
-
-# ---- STREAMLIT UI ----
-
-st.title("House Price Predictor")
-st.write("Dataset: 545 houses — prices in Indian Rupees")
-
-st.subheader("Enter House Details")
-
-col1, col2 = st.columns(2)   # creates two side-by-side columns in the UI
-
-with col1:
-    area = st.number_input("Area (sqft)", 1650, 16200, 5000)
-    bedrooms = st.slider("Bedrooms", 1, 6, 3)
-    bathrooms = st.slider("Bathrooms", 1, 4, 1)
-    stories = st.slider("Stories (floors)", 1, 4, 2)
-
-with col2:
-    parking = st.slider("Parking spots", 0, 3, 1)
-    aircon = st.selectbox("Air Conditioning", ["No", "Yes"])
-    prefarea = st.selectbox("Preferred Area", ["No", "Yes"])
-    furnishing = st.selectbox("Furnishing", 
-                    ["Furnished", "Semi-Furnished", "Unfurnished"])
-
-# convert UI inputs back to numbers the model understands
-aircon_val = 1 if aircon == "Yes" else 0
-prefarea_val = 1 if prefarea == "Yes" else 0
-furnish_map = {"Furnished": 0, "Semi-Furnished": 1, "Unfurnished": 2}
-furnish_val = furnish_map[furnishing]
-
-if st.button("Predict Price"):
-    input_data = [[area, bedrooms, bathrooms, stories, 
-                   parking, aircon_val, prefarea_val, furnish_val]]
-    prediction = model.predict(input_data)[0]
-    
-    st.success(f"Predicted Price: ₹{prediction:,.0f}")
-    st.info(f"That is ₹{prediction/100000:.2f} Lakhs")  # shows in lakhs too
-
-st.subheader("Model Accuracy")
-st.write(f"R² Score: {r2:.2f} out of 1.0")   # how accurate the model is
-st.write(f"Mean Squared Error: ₹{mse:,.0f}")
-
-st.subheader("Price vs Area")
+df, (model, report, actual, predicted) = training()
+st.title('House Price Predictor')
+st.write(f'An educational linear regression demo using {len(df)} housing records.')
+st.info('Prices are displayed in INR as in the original project. Dataset provenance, location, date and area units are not independently verified. This is not a property valuation tool.')
+st.subheader('Enter house details')
+with st.form('house_details'):
+    left, right = st.columns(2)
+    with left:
+        area = st.number_input('Area (dataset units)', int(df.area.min()), int(df.area.max()), 5000)
+        bedrooms = st.slider('Bedrooms', 1, 6, 3)
+        bathrooms = st.slider('Bathrooms', 1, 4, 1)
+        stories = st.slider('Stories (floors)', 1, 4, 2)
+    with right:
+        parking = st.slider('Parking spots', 0, 3, 1)
+        aircon = st.selectbox('Air conditioning', ['no', 'yes'])
+        prefarea = st.selectbox('Preferred area (dataset flag)', ['no', 'yes'])
+        furnishing = st.selectbox('Furnishing', ['furnished', 'semi-furnished', 'unfurnished'])
+    submitted = st.form_submit_button('Predict price')
+if submitted:
+    row = pd.DataFrame([[area, bedrooms, bathrooms, stories, parking, aircon, prefarea, furnishing]], columns=FEATURES)
+    value = float(model.predict(row)[0])
+    if value < 0:
+        st.warning('The model returned a negative price, which is invalid for a house. This input is outside its useful behavior.')
+    else:
+        st.success(f'Estimated price: ₹{value:,.0f} (₹{value / 100000:.2f} lakh)')
+    st.caption('A point estimate only; combinations of individually valid inputs may still be unlike the training houses.')
+st.subheader('Unseen-data evaluation')
+st.caption(f"Fixed 80/20 split, seed 42: {report['train_rows']} training houses and {report['test_rows']} holdout houses. The app uses this same training-only model.")
+rows = []
+for label, key in [('Linear regression', 'linear_regression'), ('Training-mean baseline', 'mean_baseline')]:
+    metrics = report[key]
+    rows.append({'Model': label, 'MAE (INR)': round(metrics['mae_inr']),
+                 'RMSE (INR)': round(metrics['rmse_inr']), 'R²': round(metrics['r2'], 3)})
+st.dataframe(pd.DataFrame(rows), hide_index=True)
+st.caption('MAE is average absolute error; RMSE penalizes larger errors. Lower is better. R² compares against the holdout mean, is not percentage accuracy, and can be negative.')
+st.subheader('Holdout predictions')
 fig, ax = plt.subplots()
-ax.scatter(df["area"], y, color="blue", alpha=0.4, label="Actual prices")
-ax.scatter(df["area"], y_pred, color="green", alpha=0.4, label="Predicted prices")
-ax.set_xlabel("Area in sqft")
-ax.set_ylabel("Price in Rupees")
-ax.legend()
-ax.grid(True)
+ax.scatter(actual / 100000, predicted / 100000, alpha=0.6)
+bounds = [min(actual.min(), predicted.min()) / 100000, max(actual.max(), predicted.max()) / 100000]
+ax.plot(bounds, bounds, '--', color='gray')
+ax.set(xlabel='Actual price (INR lakh)', ylabel='Predicted price (INR lakh)')
 st.pyplot(fig)
+plt.close(fig)

@@ -1,0 +1,17 @@
+{
+  "dataset_sha256": "a8ef508351b4d6e87b23a831cf316a3d53c794ed9d969c7b697a865a60a3d65f",
+  "random_state": 42,
+  "test_fraction": 0.2,
+  "train_rows": 436,
+  "test_rows": 109,
+  "linear_regression": {
+    "mae_inr": 1016906.9543886452,
+    "rmse_inr": 1377904.0963588646,
+    "r2": 0.624375642987668
+  },
+  "mean_baseline": {
+    "mae_inr": 1748624.606935443,
+    "rmse_inr": 2268298.228237694,
+    "r2": -0.017925679424830143
+  }
+}
